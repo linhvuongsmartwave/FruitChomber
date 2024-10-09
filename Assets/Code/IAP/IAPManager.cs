@@ -27,7 +27,7 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
     public void Start()
     {
         successFully.SetActive(false);
-        txtRuby.text=DataManager.Instance.UserData.Ruby.ToString();
+        //txtRuby.text=DataManager.Instance.UserData.Ruby.ToString();
     }
     IStoreController m_StoreController;
     int numberHint;
@@ -123,8 +123,8 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
                 hint = 100;
                 break;
         }
-        DataManager.Instance.UserData.Ruby += hint;
-        txtRuby.text = DataManager.Instance.UserData.Ruby.ToString();
+        //DataManager.Instance.UserData.Ruby += hint;
+        //txtRuby.text = DataManager.Instance.UserData.Ruby.ToString();
         AudioManager.Instance.AudioCoin();
 
         successFully.SetActive(true);

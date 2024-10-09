@@ -1,11 +1,16 @@
-﻿using UnityEditor;
+﻿using DG.Tweening;
+using UnityEditor;
 using UnityEngine;
 
 public class PackMan : MonoBehaviour
 {
     public TypePackMan typePackMan;
-    bool pushed=false;
+    bool pushed = false;
     public float speed = 5f;
+    bool moving;
+    public float timeDistance=0.2f;
+    public float distanceBack=0.2f;
+    public string tag;
     public enum TypePackMan
     {
         colum,
@@ -26,7 +31,6 @@ public class PackMan : MonoBehaviour
                 {
                     if (hit.collider != null && hit.collider.gameObject == gameObject)
                     {
-                        Debug.Log("a");
                         pushed = true;
                     }
                 }
@@ -35,23 +39,49 @@ public class PackMan : MonoBehaviour
 
         if (pushed)
         {
-            if (typePackMan == TypePackMan.colum)
+            if (moving)
             {
-                transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
+                if (typePackMan == TypePackMan.colum)
+                {
+                    transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
+                }
+                else
+                {
+                    transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
+                }
             }
-            else
-            {
-                transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
-            }
+
 
         }
     }
 
     private void OnMouseDown()
     {
-        Debug.Log("OnMouseDown");
         pushed = true;
-
-
+        moving = true;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag(tag))
+        {
+            moving = true;
+        }
+        else
+        {
+            Vector3 newPos= transform.position;
+            moving = false;
+            if (typePackMan == TypePackMan.colum)
+            {
+                newPos.y += distanceBack;
+
+            }
+            else
+            {
+                newPos.x += distanceBack;
+
+            }
+            transform.DOMove(newPos, timeDistance).SetEase(Ease.Linear);
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-using CandyCoded.HapticFeedback;
+//using CandyCoded.HapticFeedback;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,6 +61,6 @@ public class AudioManager : Singleton<AudioManager>
     }
     public void Vibrate()
     {
-        HapticFeedback.MediumFeedback();
+        //HapticFeedback.MediumFeedback();
     }
 }
