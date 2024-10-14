@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PackMan : MonoBehaviour
@@ -11,6 +11,7 @@ public class PackMan : MonoBehaviour
     public float timeDistance=0.2f;
     public float distanceBack=0.2f;
     public string tag;
+    public bool back= false;
     public enum TypePackMan
     {
         colum,
@@ -59,6 +60,7 @@ public class PackMan : MonoBehaviour
     {
         pushed = true;
         moving = true;
+        back = true;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -70,17 +72,21 @@ public class PackMan : MonoBehaviour
         {
             Vector3 newPos= transform.position;
             moving = false;
-            if (typePackMan == TypePackMan.colum)
+            if (back)
             {
-                newPos.y += distanceBack;
+                if (typePackMan == TypePackMan.colum)
+                {
+                    newPos.y += distanceBack;
 
-            }
-            else
-            {
-                newPos.x += distanceBack;
+                }
+                else
+                {
+                    newPos.x += distanceBack;
 
+                }
+                transform.DOMove(newPos, timeDistance).SetEase(Ease.Linear);
+                back = false;
             }
-            transform.DOMove(newPos, timeDistance).SetEase(Ease.Linear);
         }
     }
 

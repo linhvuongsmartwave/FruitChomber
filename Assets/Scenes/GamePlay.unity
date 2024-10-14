@@ -412,19 +412,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5041a358ee41f7b43b97a40512a217cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 5584548768909527721, guid: df2e604449f55d247a1df2801db631aa, type: 3}
-  - {fileID: 5671993236687095852, guid: ccdfcf2f81c70844a843ce50f71f4384, type: 3}
-  - {fileID: 8351268289072789893, guid: 48efb1ba9a3142a49a553249fb10cc7b, type: 3}
-  - {fileID: 5584548768909527721, guid: df2e604449f55d247a1df2801db631aa, type: 3}
-  - {fileID: 5671993236687095852, guid: ccdfcf2f81c70844a843ce50f71f4384, type: 3}
-  - {fileID: 8351268289072789893, guid: 48efb1ba9a3142a49a553249fb10cc7b, type: 3}
-  - {fileID: 5584548768909527721, guid: df2e604449f55d247a1df2801db631aa, type: 3}
-  - {fileID: 5671993236687095852, guid: ccdfcf2f81c70844a843ce50f71f4384, type: 3}
-  - {fileID: 8351268289072789893, guid: 48efb1ba9a3142a49a553249fb10cc7b, type: 3}
   row: 3
   col: 3
   spacing: 1
+  fruitLevels:
+  - {fileID: 11400000, guid: 9950c28630d62764ba46ed4d3c75bd5c, type: 2}
+  - {fileID: 11400000, guid: f151e68b9b9592744a1a18d795cde622, type: 2}
+  levelStart: 1
 --- !u!4 &2052530841
 Transform:
   m_ObjectHideFlags: 0
