@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    //public List<GameObject> prefabsFruit = new List<GameObject>();
-    public int row ;
-    public int col ;
-    public float spacing = 1.5f;
+    public int row;
+    public int col;
+    public float spacing;
     public List<FruitLevel> fruitLevels = new List<FruitLevel>();
+    public List<PackmanLevel> packmanLevels = new List<PackmanLevel>();
     public int levelStart;
 
 
@@ -23,7 +23,8 @@ public class GameManager : MonoBehaviour
         this.row = fruitLevels[levelStart].row;
         this.col = fruitLevels[levelStart].col;
         FruitLevel level = fruitLevels[levelStart];
-        Vector2 startPos = new Vector2((col - 1) * spacing / 2, (row - 1) * spacing / 2);
+        PackmanLevel pack = packmanLevels[levelStart];
+        Vector2 startPos = new Vector2(-(col - 1) * spacing / 2, (row - 1) * spacing / 2);
         int index = 0;
 
 
@@ -31,10 +32,26 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < col; j++)
             {
-                Vector2 spawnPos = new Vector2(startPos.x - j * spacing, startPos.y - i * spacing);
+                Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y - i * spacing);
                 Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
                 index++;
             }
+        }
+        int halfCount = pack.listPackman.Count / 2;
+
+        // Sinh nửa đầu của pack.listPackman nằm trên đầu lưới
+        for (int i = 0; i < halfCount; i++)
+        {
+            Vector2 spawnPos = new Vector2(startPos.x + i * spacing, startPos.y + spacing); // Trên hàng đầu
+            Instantiate(pack.listPackman[i], spawnPos, Quaternion.identity);
+        }
+
+        // Sinh nửa sau của pack.listPackman nằm bên phải lưới
+        for (int i = halfCount; i < pack.listPackman.Count; i++)
+        {
+            int rowIndex = i - halfCount; // Xác định hàng tương ứng cho phần bên phải
+            Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - rowIndex * spacing); // Bên phải cột cuối
+            Instantiate(pack.listPackman[i], spawnPos, Quaternion.identity);
         }
     }
 
