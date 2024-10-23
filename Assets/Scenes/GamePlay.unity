@@ -415,14 +415,10 @@ MonoBehaviour:
   row: 3
   col: 3
   spacing: 1
-  fruitLevels:
-  - {fileID: 11400000, guid: 9950c28630d62764ba46ed4d3c75bd5c, type: 2}
-  - {fileID: 11400000, guid: f151e68b9b9592744a1a18d795cde622, type: 2}
-  - {fileID: 11400000, guid: ee651cfcc44438b46af1926d80266f5e, type: 2}
-  packmanLevels:
-  - {fileID: 11400000, guid: 1eff6b41d297f6647bb5e459addfb47b, type: 2}
-  - {fileID: 11400000, guid: b9d0029156188bf4ba9ce1e1ce504b3a, type: 2}
-  levelStart: 0
+  fruitLevels: []
+  packmanLevels: []
+  levelStart: 7
+  isHint: 0
 --- !u!4 &2052530841
 Transform:
   m_ObjectHideFlags: 0

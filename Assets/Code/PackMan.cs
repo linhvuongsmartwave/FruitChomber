@@ -61,9 +61,15 @@ public class PackMan : MonoBehaviour
         pushed = true;
         moving = true;
         back = true;
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (GameManager.Instance.isHint && collision!=null)
+        {
+            Destroy(collision.gameObject);
+            return;
+        }
         if (collision.gameObject.CompareTag(tag))
         {
             moving = true;

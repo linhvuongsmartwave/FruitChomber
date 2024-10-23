@@ -2,21 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public int row;
     public int col;
     public float spacing;
-    public List<FruitLevel> fruitLevels = new List<FruitLevel>();
-    public List<PackmanLevel> packmanLevels = new List<PackmanLevel>();
+    public FruitLevel[] fruitLevels;
+    public PackmanLevel[] packmanLevels;
     public int levelStart;
-
+    public bool isHint=false;
+        
 
 
     private void Awake()
     {
+        LoadReSoure();
         LoadMap();
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
 
+    }
+    void LoadReSoure()
+    {
+        fruitLevels = Resources.LoadAll<FruitLevel>("FruitLevel");
+        packmanLevels = Resources.LoadAll<PackmanLevel>("PackmanLevel");
     }
     public void LoadMap()
     {
@@ -27,33 +36,33 @@ public class GameManager : MonoBehaviour
         Vector2 startPos = new Vector2(-(col - 1) * spacing / 2, (row - 1) * spacing / 2);
         int index = 0;
 
-
         for (int i = 0; i < row; i++)
         {
             for (int j = 0; j < col; j++)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y - i * spacing);
-                Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
+                GameObject enemy= Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
                 index++;
             }
         }
-        int halfCount = pack.listPackman.Count / 2;
 
-        // Sinh nửa đầu của pack.listPackman nằm trên đầu lưới
-        for (int i = 0; i < halfCount; i++)
+        for (int j = 0; j < col; j++)
         {
-            Vector2 spawnPos = new Vector2(startPos.x + i * spacing, startPos.y + spacing); // Trên hàng đầu
-            Instantiate(pack.listPackman[i], spawnPos, Quaternion.identity);
+            if (j < pack.listPackman.Count)
+            {
+                Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing); // Spawn above the grid
+                Instantiate(pack.listPackman[j], spawnPos, Quaternion.identity);
+            }
         }
 
-        // Sinh nửa sau của pack.listPackman nằm bên phải lưới
-        for (int i = halfCount; i < pack.listPackman.Count; i++)
+        for (int i = 0; i < row; i++)
         {
-            int rowIndex = i - halfCount; // Xác định hàng tương ứng cho phần bên phải
-            Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - rowIndex * spacing); // Bên phải cột cuối
-            Instantiate(pack.listPackman[i], spawnPos, Quaternion.identity);
+            int packmanIndex = col + i; // Continue from where the top row Packman spawning left off
+            if (packmanIndex < pack.listPackman.Count)
+            {
+                Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing); // Spawn to the right of the grid
+                Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
+            }
         }
     }
-
-
 }
