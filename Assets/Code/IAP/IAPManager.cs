@@ -15,14 +15,14 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
     public TextMeshProUGUI txtNoPackage;
     public TextMeshProUGUI txtRuby;
     public GameObject successFully;
-    const string PACK_1 = "com.blademonster_v2.pack1";
-    const string PACK_2 = "com.blademonster_v2.pack2";
-    const string PACK_3 = "com.blademonster_v2.pack3";
-    const string PACK_4 = "com.blademonster_v2.pack4";
-    const string PACK_5 = "com.blademonster_v2.pack5";
-    const string PACK_6 = "com.blademonster_v2.pack6";
-    const string PACK_7 = "com.blademonster_v2.pack7";
-    const string PACK_8 = "com.blademonster_v2.pack8";
+    const string PACK_1 = "com..pack1";
+    const string PACK_2 = "com..pack2";
+    const string PACK_3 = "com..pack3";
+    const string PACK_4 = "com..pack4";
+    const string PACK_5 = "com..pack5";
+    const string PACK_6 = "com..pack6";
+    const string PACK_7 = "com..pack7";
+    const string PACK_8 = "com..pack8";
 
     public void Start()
     {

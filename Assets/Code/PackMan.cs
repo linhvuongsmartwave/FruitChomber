@@ -12,6 +12,8 @@ public class PackMan : MonoBehaviour
     public float distanceBack=0.2f;
     public string tag;
     public bool back= false;
+    public int count=0;
+    private static bool packmanClickedDuringHint = false;
     public enum TypePackMan
     {
         colum,
@@ -58,6 +60,16 @@ public class PackMan : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (GameManager.Instance.isHint && packmanClickedDuringHint)
+        {
+            return; // Ngăn chặn nhấn thêm Packman trong khi isHint đang hoạt động
+        }
+
+        // Nếu isHint là true và chưa có Packman nào được nhấn, đánh dấu Packman này đã được nhấn
+        if (GameManager.Instance.isHint)
+        {
+            packmanClickedDuringHint = true;
+        }
         pushed = true;
         moving = true;
         back = true;
@@ -68,6 +80,25 @@ public class PackMan : MonoBehaviour
         if (GameManager.Instance.isHint && collision!=null)
         {
             Destroy(collision.gameObject);
+            count++;
+            if (typePackMan == TypePackMan.colum)
+            {
+                if (count == GameManager.Instance.col)
+                {
+                    count = 0;
+                    GameManager.Instance.isHint = false;
+                    packmanClickedDuringHint = false;
+                }
+            }
+            else
+            {
+                if (count == GameManager.Instance.row)
+                {
+                    count = 0;
+                    GameManager.Instance.isHint = false;
+                    packmanClickedDuringHint = false;
+                }
+            }
             return;
         }
         if (collision.gameObject.CompareTag(tag))

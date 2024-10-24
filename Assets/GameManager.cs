@@ -50,17 +50,17 @@ public class GameManager : Singleton<GameManager>
         {
             if (j < pack.listPackman.Count)
             {
-                Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing); // Spawn above the grid
+                Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing);
                 Instantiate(pack.listPackman[j], spawnPos, Quaternion.identity);
             }
         }
 
         for (int i = 0; i < row; i++)
         {
-            int packmanIndex = col + i; // Continue from where the top row Packman spawning left off
+            int packmanIndex = col + i; 
             if (packmanIndex < pack.listPackman.Count)
             {
-                Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing); // Spawn to the right of the grid
+                Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing); 
                 Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
             }
         }
