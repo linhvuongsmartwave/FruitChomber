@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -11,7 +12,8 @@ public class GameManager : Singleton<GameManager>
     public PackmanLevel[] packmanLevels;
     public int levelStart;
     public bool isHint=false;
-        
+    //public bool moving;
+    public int countDestroy=0;
 
 
     private void Awake()
@@ -29,6 +31,7 @@ public class GameManager : Singleton<GameManager>
     }
     public void LoadMap()
     {
+
         this.row = fruitLevels[levelStart].row;
         this.col = fruitLevels[levelStart].col;
         FruitLevel level = fruitLevels[levelStart];
@@ -64,5 +67,14 @@ public class GameManager : Singleton<GameManager>
                 Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
             }
         }
+    }
+    public void CheckWin()
+    {
+        countDestroy++;
+        if (countDestroy==row*col)
+        {
+            Debug.Log("Win");
+        }
+
     }
 }

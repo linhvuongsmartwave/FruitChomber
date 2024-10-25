@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,13 +8,13 @@ public class PackMan : MonoBehaviour
     public TypePackMan typePackMan;
     bool pushed = false;
     public float speed = 5f;
-    bool moving;
     public float timeDistance=0.2f;
     public float distanceBack=0.2f;
     public string tag;
     public bool back= false;
-    public int count=0;
-    private static bool packmanClickedDuringHint = false;
+    public int count=5;
+    bool moving;
+    private static bool clickPackman = false;
     public enum TypePackMan
     {
         colum,
@@ -34,7 +35,14 @@ public class PackMan : MonoBehaviour
                 {
                     if (hit.collider != null && hit.collider.gameObject == gameObject)
                     {
+                        if (GameManager.Instance.isHint && clickPackman) return;
+                        if (GameManager.Instance.isHint)
+                        {
+                            clickPackman = true;
+                        }
                         pushed = true;
+                        moving = true;
+                        back = true;
                     }
                 }
             }
@@ -54,57 +62,41 @@ public class PackMan : MonoBehaviour
                 }
             }
 
-
         }
     }
 
     private void OnMouseDown()
     {
-        if (GameManager.Instance.isHint && packmanClickedDuringHint)
-        {
-            return; // Ngăn chặn nhấn thêm Packman trong khi isHint đang hoạt động
-        }
-
-        // Nếu isHint là true và chưa có Packman nào được nhấn, đánh dấu Packman này đã được nhấn
+        if (GameManager.Instance.isHint && clickPackman) return;
         if (GameManager.Instance.isHint)
         {
-            packmanClickedDuringHint = true;
+            clickPackman = true;
         }
         pushed = true;
         moving = true;
         back = true;
 
     }
+    public IEnumerator WaitPackMove()
+    {
+        yield return new WaitForSeconds(1f);
+        GameManager.Instance.isHint = false;
+        clickPackman = false;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GameManager.Instance.isHint && collision!=null)
         {
             Destroy(collision.gameObject);
-            count++;
+            count--;
             if (typePackMan == TypePackMan.colum)
-            {
-                if (count == GameManager.Instance.col)
-                {
-                    count = 0;
-                    GameManager.Instance.isHint = false;
-                    packmanClickedDuringHint = false;
-                }
-            }
+                StartCoroutine(WaitPackMove());
             else
-            {
-                if (count == GameManager.Instance.row)
-                {
-                    count = 0;
-                    GameManager.Instance.isHint = false;
-                    packmanClickedDuringHint = false;
-                }
-            }
+                StartCoroutine(WaitPackMove());
             return;
         }
         if (collision.gameObject.CompareTag(tag))
-        {
             moving = true;
-        }
         else
         {
             Vector3 newPos= transform.position;
@@ -112,15 +104,9 @@ public class PackMan : MonoBehaviour
             if (back)
             {
                 if (typePackMan == TypePackMan.colum)
-                {
                     newPos.y += distanceBack;
-
-                }
                 else
-                {
                     newPos.x += distanceBack;
-
-                }
                 transform.DOMove(newPos, timeDistance).SetEase(Ease.Linear);
                 back = false;
             }

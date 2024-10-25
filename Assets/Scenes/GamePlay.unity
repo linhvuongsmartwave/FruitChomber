@@ -417,8 +417,9 @@ MonoBehaviour:
   spacing: 1
   fruitLevels: []
   packmanLevels: []
-  levelStart: 9
+  levelStart: 1
   isHint: 0
+  countDestroy: 0
 --- !u!4 &2052530841
 Transform:
   m_ObjectHideFlags: 0
