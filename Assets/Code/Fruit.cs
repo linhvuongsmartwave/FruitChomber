@@ -16,4 +16,8 @@ public class Fruit : MonoBehaviour
             });
         }
     }
+    private void OnDestroy()
+    {
+        GameManager.Instance.CheckWin();
+    }
 }
