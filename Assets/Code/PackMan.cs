@@ -8,17 +8,22 @@ public class PackMan : MonoBehaviour
     public TypePackMan typePackMan;
     bool pushed = false;
     public float speed = 5f;
-    public float timeDistance=0.2f;
-    public float distanceBack=0.2f;
+    public float timeDistance = 0.2f;
+    public float distanceBack = 0.2f;
     public string tag;
-    public bool back= false;
-    public int count=5;
+    public bool back = false;
+    public int count = 5;
     bool moving;
     private static bool clickPackman = false;
+    public CircleCollider2D circleCollider;
     public enum TypePackMan
     {
         colum,
         row
+    }
+    private void Awake()
+    {
+        circleCollider = GetComponent<CircleCollider2D>();
     }
     void FixedUpdate()
     {
@@ -48,20 +53,24 @@ public class PackMan : MonoBehaviour
             }
         }
 
-        if (pushed)
+        if (pushed && moving)
         {
-            if (moving)
+
+            if (typePackMan == TypePackMan.colum)
             {
-                if (typePackMan == TypePackMan.colum)
-                {
-                    transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
-                }
-                else
-                {
-                    transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
-                }
+                transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
             }
 
+        }
+        if (GameManager.Instance.win)
+        {
+            circleCollider.enabled = false;
+            pushed=true;
+            moving = true;
         }
     }
 
@@ -85,7 +94,7 @@ public class PackMan : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GameManager.Instance.isHint && collision!=null)
+        if (GameManager.Instance.isHint && collision != null)
         {
             Destroy(collision.gameObject);
             count--;
@@ -99,7 +108,7 @@ public class PackMan : MonoBehaviour
             moving = true;
         else
         {
-            Vector3 newPos= transform.position;
+            Vector3 newPos = transform.position;
             moving = false;
             if (back)
             {

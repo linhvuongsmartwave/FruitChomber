@@ -11,7 +11,7 @@ public class GameManager : Singleton<GameManager>
     public PackmanLevel[] packmanLevels;
     public int levelStart;
     public bool isHint=false;
-    //public bool moving;
+    public  bool win=false;
     public int countDestroy=0;
 
 
@@ -73,6 +73,7 @@ public class GameManager : Singleton<GameManager>
         if (countDestroy==row*col)
         {
             Debug.Log("Win");
+            win = true;
         }
 
     }
