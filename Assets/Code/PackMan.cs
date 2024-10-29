@@ -12,7 +12,6 @@ public class PackMan : MonoBehaviour
     public float distanceBack = 0.2f;
     public string tag;
     public bool back = false;
-    public int count = 5;
     bool moving;
     private static bool clickPackman = false;
     public CircleCollider2D circleCollider;
@@ -58,7 +57,7 @@ public class PackMan : MonoBehaviour
 
             if (typePackMan == TypePackMan.colum)
             {
-                transform.Translate(new Vector3(0, -1, 0) * speed * Time.deltaTime);
+                transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
             }
             else
             {
@@ -97,7 +96,6 @@ public class PackMan : MonoBehaviour
         if (GameManager.Instance.isHint && collision != null)
         {
             Destroy(collision.gameObject);
-            count--;
             if (typePackMan == TypePackMan.colum)
                 StartCoroutine(WaitPackMove());
             else

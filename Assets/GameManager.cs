@@ -53,7 +53,8 @@ public class GameManager : Singleton<GameManager>
             if (j < pack.listPackman.Count)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing);
-                Instantiate(pack.listPackman[j], spawnPos, Quaternion.identity);
+                Instantiate(pack.listPackman[j], spawnPos, Quaternion.Euler(0, 0, 90));
+
             }
         }
 

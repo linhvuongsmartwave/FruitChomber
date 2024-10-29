@@ -18,6 +18,9 @@ public class Fruit : MonoBehaviour
     }
     private void OnDestroy()
     {
-        GameManager.Instance.CheckWin();
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CheckWin();
+        }
     }
 }
