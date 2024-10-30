@@ -6,14 +6,14 @@ public class GameManager : Singleton<GameManager>
 {
     public int row;
     public int col;
-    public float spacing;
+    public float spacing;   
     public FruitLevel[] fruitLevels;
     public PackmanLevel[] packmanLevels;
     public int levelStart;
     public bool isHint=false;
     public  bool win=false;
     public int countDestroy=0;
-
+    private List<GameObject> spawnedObjects = new List<GameObject>();
 
     private void Awake()
     {
@@ -28,9 +28,17 @@ public class GameManager : Singleton<GameManager>
         fruitLevels = Resources.LoadAll<FruitLevel>("FruitLevel");
         packmanLevels = Resources.LoadAll<PackmanLevel>("PackmanLevel");
     }
+    private void ClearSpawnedObjects()
+    {
+        foreach (var obj in spawnedObjects)
+        {
+            if (obj != null) Destroy(obj);
+        }
+        spawnedObjects.Clear();
+    }
     public void LoadMap()
     {
-
+        ClearSpawnedObjects();
         this.row = fruitLevels[levelStart].row;
         this.col = fruitLevels[levelStart].col;
         FruitLevel level = fruitLevels[levelStart];
@@ -44,6 +52,7 @@ public class GameManager : Singleton<GameManager>
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y - i * spacing);
                 GameObject enemy= Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
+                spawnedObjects.Add(enemy);
                 index++;
             }
         }
@@ -53,7 +62,8 @@ public class GameManager : Singleton<GameManager>
             if (j < pack.listPackman.Count)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing);
-                Instantiate(pack.listPackman[j], spawnPos, Quaternion.Euler(0, 0, 90));
+                GameObject enemy= Instantiate(pack.listPackman[j], spawnPos, Quaternion.Euler(0, 0, 90));
+                spawnedObjects.Add(enemy);
 
             }
         }
@@ -63,8 +73,9 @@ public class GameManager : Singleton<GameManager>
             int packmanIndex = col + i; 
             if (packmanIndex < pack.listPackman.Count)
             {
-                Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing); 
-                Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
+                Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing);
+                GameObject enemy = Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
+                spawnedObjects.Add(enemy);
             }
         }
     }

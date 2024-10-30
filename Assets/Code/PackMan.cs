@@ -7,14 +7,15 @@ public class PackMan : MonoBehaviour
 {
     public TypePackMan typePackMan;
     bool pushed = false;
-    public float speed = 5f;
+    public float speed;
     public float timeDistance = 0.2f;
-    public float distanceBack = 0.2f;
+    public float distanceBack;
     public string tag;
     public bool back = false;
     bool moving;
     private static bool clickPackman = false;
     public CircleCollider2D circleCollider;
+    Animator animator;
     public enum TypePackMan
     {
         colum,
@@ -23,6 +24,9 @@ public class PackMan : MonoBehaviour
     private void Awake()
     {
         circleCollider = GetComponent<CircleCollider2D>();
+        animator=GetComponent<Animator>();
+        speed = 4f;
+        distanceBack = GameManager.Instance.spacing/2;
     }
     void FixedUpdate()
     {
@@ -54,7 +58,6 @@ public class PackMan : MonoBehaviour
 
         if (pushed && moving)
         {
-
             if (typePackMan == TypePackMan.colum)
             {
                 transform.Translate(new Vector3(-1, 0, 0) * speed * Time.deltaTime);
@@ -103,12 +106,19 @@ public class PackMan : MonoBehaviour
             return;
         }
         if (collision.gameObject.CompareTag(tag))
+        {
             moving = true;
+            animator.SetBool("isMoving",true);
+        }
+
+
         else
         {
+            animator.SetBool("isMoving", false);
+
             Vector3 newPos = transform.position;
             moving = false;
-            if (back)
+            if (back) 
             {
                 if (typePackMan == TypePackMan.colum)
                     newPos.y += distanceBack;
