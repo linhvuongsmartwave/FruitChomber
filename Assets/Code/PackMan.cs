@@ -25,7 +25,7 @@ public class PackMan : MonoBehaviour
     {
         circleCollider = GetComponent<CircleCollider2D>();
         animator=GetComponent<Animator>();
-        speed = 4f;
+        speed = 2f;
         distanceBack = GameManager.Instance.spacing/2;
     }
     void FixedUpdate()

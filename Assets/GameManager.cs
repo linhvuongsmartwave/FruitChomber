@@ -6,14 +6,16 @@ public class GameManager : Singleton<GameManager>
 {
     public int row;
     public int col;
-    public float spacing;   
+    public float spacing;
     public FruitLevel[] fruitLevels;
     public PackmanLevel[] packmanLevels;
     public int levelStart;
-    public bool isHint=false;
-    public  bool win=false;
-    public int countDestroy=0;
+    public bool isHint = false;
+    public bool win = false;
+    public int countDestroy = 0;
     private List<GameObject> spawnedObjects = new List<GameObject>();
+    public GameObject effectWin1;
+    public GameObject effectWin2;
 
     private void Awake()
     {
@@ -51,7 +53,7 @@ public class GameManager : Singleton<GameManager>
             for (int j = 0; j < col; j++)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y - i * spacing);
-                GameObject enemy= Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
+                GameObject enemy = Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
                 spawnedObjects.Add(enemy);
                 index++;
             }
@@ -62,7 +64,7 @@ public class GameManager : Singleton<GameManager>
             if (j < pack.listPackman.Count)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y + spacing);
-                GameObject enemy= Instantiate(pack.listPackman[j], spawnPos, Quaternion.Euler(0, 0, 90));
+                GameObject enemy = Instantiate(pack.listPackman[j], spawnPos, Quaternion.Euler(0, 0, 90));
                 spawnedObjects.Add(enemy);
 
             }
@@ -70,7 +72,7 @@ public class GameManager : Singleton<GameManager>
 
         for (int i = 0; i < row; i++)
         {
-            int packmanIndex = col + i; 
+            int packmanIndex = col + i;
             if (packmanIndex < pack.listPackman.Count)
             {
                 Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing);
@@ -82,11 +84,18 @@ public class GameManager : Singleton<GameManager>
     public void CheckWin()
     {
         countDestroy++;
-        if (countDestroy==row*col)
+        if (countDestroy == row * col)
         {
             Debug.Log("Win");
             win = true;
+            StartCoroutine(Win());
         }
 
+    }
+    IEnumerator Win()
+    {
+        yield return new WaitForSeconds(1);
+        GameObject eff1 = Instantiate(effectWin1, Vector2.zero, Quaternion.identity);
+        GameObject eff2 = Instantiate(effectWin2, Vector2.zero, Quaternion.identity);
     }
 }

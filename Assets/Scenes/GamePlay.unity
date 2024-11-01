@@ -421,6 +421,8 @@ MonoBehaviour:
   isHint: 0
   win: 0
   countDestroy: 0
+  effectWin1: {fileID: 1858798456717250, guid: e6b0c8eedb7b4b148b2d830fdcf06603, type: 3}
+  effectWin2: {fileID: 165244, guid: 8f6a3d95cdec3f148b48cc4604a41a59, type: 3}
 --- !u!4 &2052530841
 Transform:
   m_ObjectHideFlags: 0
