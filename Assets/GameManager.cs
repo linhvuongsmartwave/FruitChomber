@@ -9,21 +9,29 @@ public class GameManager : Singleton<GameManager>
     public float spacing;
     public FruitLevel[] fruitLevels;
     public PackmanLevel[] packmanLevels;
-    public int levelStart;
+    //public int levelStart;
     public bool isHint = false;
     public bool win = false;
     public int countDestroy = 0;
     private List<GameObject> spawnedObjects = new List<GameObject>();
     public GameObject effectWin1;
     public GameObject effectWin2;
+    private int numberLevel;
+    private int numberSelect;
 
     private void Awake()
     {
-        LoadReSoure();
-        LoadMap();
+
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+        numberSelect = PlayerPrefs.GetInt("SelectedLevel", 0);
+        numberLevel = PlayerPrefs.GetInt("CompletedLevel", 0);
 
+    }
+    private void Start()
+    {
+        LoadReSoure();
+        LoadMap();
     }
     void LoadReSoure()
     {
@@ -41,10 +49,10 @@ public class GameManager : Singleton<GameManager>
     public void LoadMap()
     {
         ClearSpawnedObjects();
-        this.row = fruitLevels[levelStart].row;
-        this.col = fruitLevels[levelStart].col;
-        FruitLevel level = fruitLevels[levelStart];
-        PackmanLevel pack = packmanLevels[levelStart];
+        this.row = fruitLevels[numberSelect].row;
+        this.col = fruitLevels[numberSelect].col;
+        FruitLevel level = fruitLevels[numberSelect];
+        PackmanLevel pack = packmanLevels[numberSelect];
         Vector2 startPos = new Vector2(-(col - 1) * spacing / 2, (row - 1) * spacing / 2);
         int index = 0;
 
@@ -91,6 +99,20 @@ public class GameManager : Singleton<GameManager>
             StartCoroutine(Win());
         }
 
+    }
+    public void NextLevel()
+    {
+        numberSelect++;
+        if (numberSelect > numberLevel) numberLevel++;
+        else numberLevel = numberSelect;
+        PlayerPrefs.SetInt("SelectedLevel", numberSelect);
+        if (numberLevel >= numberSelect)
+        {
+            PlayerPrefs.SetInt("CompletedLevel", numberLevel);
+            PlayerPrefs.Save();
+        }
+        PlayerPrefs.Save();
+        //sceneFader.FadeTo("GamePlay");
     }
     IEnumerator Win()
     {

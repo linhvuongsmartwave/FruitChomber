@@ -4,17 +4,10 @@ using UnityEngine.Purchasing;
 using System;
 using UnityEngine.Purchasing.Extension;
 using TMPro;
-
-
-
-
-
 public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
 {
     private List<ItemIAP> listItems = new List<ItemIAP>();
     public TextMeshProUGUI txtNoPackage;
-    public TextMeshProUGUI txtRuby;
-    public GameObject successFully;
     const string PACK_1 = "com..pack1";
     const string PACK_2 = "com..pack2";
     const string PACK_3 = "com..pack3";
@@ -23,12 +16,6 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
     const string PACK_6 = "com..pack6";
     const string PACK_7 = "com..pack7";
     const string PACK_8 = "com..pack8";
-
-    public void Start()
-    {
-        successFully.SetActive(false);
-        //txtRuby.text=DataManager.Instance.UserData.Ruby.ToString();
-    }
     IStoreController m_StoreController;
     int numberHint;
 
@@ -123,11 +110,7 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
                 hint = 100;
                 break;
         }
-        //DataManager.Instance.UserData.Ruby += hint;
-        //txtRuby.text = DataManager.Instance.UserData.Ruby.ToString();
-        AudioManager.Instance.AudioCoin();
-
-        successFully.SetActive(true);
+        Shop.Instance.BuyRuby(hint);
 
         return PurchaseProcessingResult.Complete;
     }
