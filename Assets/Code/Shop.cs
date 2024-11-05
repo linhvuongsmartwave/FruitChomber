@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
     public int ruby;
-    public TextMeshProUGUI Ruby;
+    public TextMeshProUGUI txtRuby;
     public static Shop Instance;
     private void Awake()
     {
@@ -39,7 +37,7 @@ public class Shop : MonoBehaviour
 
     public void UpdateGold()
     {
-        Ruby.text = ruby.ToString();
+        txtRuby.text = ruby.ToString();
     }
 }
 

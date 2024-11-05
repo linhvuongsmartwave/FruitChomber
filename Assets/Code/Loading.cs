@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Loading : MonoBehaviour
@@ -8,8 +9,6 @@ public class Loading : MonoBehaviour
     public Image img;
     float time = 2.5f;
     float maxTime = 0f;
-    public GameObject loading;
-    public GameObject homeScene;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -20,8 +19,7 @@ public class Loading : MonoBehaviour
     {
         img.fillAmount = 0;
         maxTime = time;
-        homeScene.gameObject.SetActive(false);
-        Invoke(nameof(Hide),2.8f);
+        Invoke(nameof(LoadSceneGameplay),2.8f);
     }
 
     // Update is called once per frame
@@ -38,10 +36,9 @@ public class Loading : MonoBehaviour
             img.fillAmount = 1f;
         }
     }
-    void Hide()
+ 
+    public void LoadSceneGameplay()
     {
-        loading.gameObject.SetActive(false);
-        homeScene.gameObject.SetActive(true);
-
+        SceneManager.LoadScene("HomeScene");
     }
 }

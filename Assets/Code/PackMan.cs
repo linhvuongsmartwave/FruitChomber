@@ -51,6 +51,8 @@ public class PackMan : MonoBehaviour
                         pushed = true;
                         moving = true;
                         back = true;
+                        GameManager.Instance.btnHint.interactable = false;
+
                     }
                 }
             }
@@ -86,11 +88,12 @@ public class PackMan : MonoBehaviour
         pushed = true;
         moving = true;
         back = true;
+        GameManager.Instance.btnHint.interactable = false;
 
     }
     public IEnumerator WaitPackMove()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
         GameManager.Instance.isHint = false;
         clickPackman = false;
     }
@@ -118,7 +121,7 @@ public class PackMan : MonoBehaviour
 
             Vector3 newPos = transform.position;
             moving = false;
-            if (back) 
+            if (back)
             {
                 if (typePackMan == TypePackMan.colum)
                     newPos.y += distanceBack;

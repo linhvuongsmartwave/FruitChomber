@@ -110,7 +110,14 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
                 hint = 100;
                 break;
         }
-        Shop.Instance.BuyRuby(hint);
+        if (Shop.Instance != null)
+        {
+            Shop.Instance.BuyRuby(hint);
+        }
+        else
+        {
+            Debug.LogError("Shop instance is not available.");
+        }
 
         return PurchaseProcessingResult.Complete;
     }
