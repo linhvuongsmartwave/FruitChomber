@@ -16,13 +16,16 @@ public class GameManager : MonoBehaviour
     public bool win = false;
     public int countDestroy = 0;
     private List<GameObject> spawnedObjects = new List<GameObject>();
+    private List<GameObject> fruitsList = new List<GameObject>();
     private int numberLevel;
     private int numberSelect;
     public Button btnHint;
     public UiPanelDotween panelWin;
     public UiPanelDotween shop;
     public TextMeshProUGUI txtLevel;
+    public TextMeshProUGUI txtHint;
     public static GameManager Instance;
+    public GameObject tray;
     private void Awake()
     {
         Instance = this;
@@ -33,37 +36,12 @@ public class GameManager : MonoBehaviour
         btnHint = GameObject.Find("ButtonBooster").GetComponent<Button>();
         panelWin = GameObject.Find("PanelWin").GetComponent<UiPanelDotween>();
         txtLevel = GameObject.Find("txtLevel").GetComponent<TextMeshProUGUI>();
-        LoadReSoure();
         LoadMap();
+        txtHint.gameObject.SetActive(false);
 
     }
-    private void Start()
-    {
 
 
-    }
-    void LoadReSoure()
-    {
-        fruitLevels = Resources.LoadAll<FruitLevel>("FruitLevel");
-        packmanLevels = Resources.LoadAll<PackmanLevel>("PackmanLevel");
-        if (fruitLevels == null || fruitLevels.Length == 0)
-        {
-            Debug.Log("FruitLevel resources not found or empty!");
-        }
-        else
-        {
-            Debug.Log("khong van de gi");
-        }
-        if (packmanLevels == null || packmanLevels.Length == 0)
-        {
-            Debug.Log("PackmanLevel resources not found or empty!");
-        }
-        else
-        {
-            Debug.Log("khong van de gi");
-
-        }
-    }
     private void ClearSpawnedObjects()
     {
         foreach (var obj in spawnedObjects)
@@ -72,13 +50,9 @@ public class GameManager : MonoBehaviour
         }
         spawnedObjects.Clear();
     }
+
     public void LoadMap()
     {
-        if (fruitLevels == null || packmanLevels == null || fruitLevels.Length <= numberSelect || packmanLevels.Length <= numberSelect)
-        {
-            Debug.Log("FruitLevels or PackmanLevels is null or not loaded properly.");
-            return;
-        }
         ClearSpawnedObjects();
         txtLevel.text = "Level " + (numberSelect + 1).ToString();
         this.row = fruitLevels[numberSelect].row;
@@ -92,11 +66,15 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < col; j++)
             {
-                if (index < level.enemies.Count) // Kiểm tra để đảm bảo index hợp lệ
+                if (index < level.enemies.Count) 
                 {
                     Vector2 spawnPos = new Vector2(startPos.x + j * spacing, startPos.y - i * spacing);
                     GameObject enemy = Instantiate(level.enemies[index], spawnPos, Quaternion.identity);
+                    Instantiate(tray, spawnPos, Quaternion.identity);
+
                     spawnedObjects.Add(enemy);
+                    fruitsList.Add(enemy);
+                    Debug.Log("Loaded enemy at index: " + index + ", position: " + spawnPos + ", enemy name: " + level.enemies[index].name);
                 }
                 index++;
             }
@@ -119,10 +97,12 @@ public class GameManager : MonoBehaviour
             {
                 Vector2 spawnPos = new Vector2(startPos.x + col * spacing, startPos.y - i * spacing);
                 GameObject enemy = Instantiate(pack.listPackman[packmanIndex], spawnPos, Quaternion.identity);
+
                 spawnedObjects.Add(enemy);
             }
         }
     }
+
     public void CheckWin()
     {
         countDestroy++;
@@ -135,8 +115,8 @@ public class GameManager : MonoBehaviour
             Shop.Instance.UpdateGold();
             Shop.Instance.Save();
         }
-
     }
+
     public void NextLevel()
     {
         numberSelect++;
@@ -150,17 +130,51 @@ public class GameManager : MonoBehaviour
         }
         PlayerPrefs.Save();
         SceneManager.LoadScene("GamePlay");
-        //sceneFader.FadeTo("GamePlay");
     }
+
     IEnumerator Win()
     {
         yield return new WaitForSeconds(1);
         panelWin.PanelFadeIn();
     }
+
+    public void Fade()
+    {
+        foreach (GameObject fruit in fruitsList)
+        {
+            SpriteRenderer spriteRenderer = fruit.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                Color color = spriteRenderer.color;
+                color.a = 0.5f; 
+                spriteRenderer.color = color;
+            }
+        }
+    }
+    public void UnFade()
+    {
+        for (int i = fruitsList.Count - 1; i >= 0; i--)
+        {
+            if (fruitsList[i] == null) fruitsList.RemoveAt(i);
+        }
+        foreach (GameObject fruit in fruitsList)
+        {
+            SpriteRenderer spriteRenderer = fruit.GetComponent<SpriteRenderer>();
+            if (spriteRenderer != null)
+            {
+                Color color = spriteRenderer.color;
+                color.a = 1f; 
+                spriteRenderer.color = color;
+            }
+        }
+    }
+
     public void Booster()
     {
         btnHint.interactable = false;
         isHint = true;
+        Fade();
+        txtHint.gameObject.SetActive(true);
         if (Shop.Instance.ruby >= 2)
         {
             Shop.Instance.ruby -= 2;
@@ -169,17 +183,16 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-
             shop.PanelFadeIn();
+            btnHint.interactable = true;
         }
-
-
-
     }
+
     public void HomeScene()
     {
         SceneManager.LoadScene("HomeScene");
     }
+
     public void Replay()
     {
         SceneManager.LoadScene("GamePlay");

@@ -96,6 +96,8 @@ public class PackMan : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         GameManager.Instance.isHint = false;
         clickPackman = false;
+        GameManager.Instance.UnFade();
+        GameManager.Instance.txtHint.gameObject.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

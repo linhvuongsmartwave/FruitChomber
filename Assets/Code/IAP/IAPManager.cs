@@ -8,17 +8,22 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
 {
     private List<ItemIAP> listItems = new List<ItemIAP>();
     public TextMeshProUGUI txtNoPackage;
-    const string PACK_1 = "com..pack1";
-    const string PACK_2 = "com..pack2";
-    const string PACK_3 = "com..pack3";
-    const string PACK_4 = "com..pack4";
-    const string PACK_5 = "com..pack5";
-    const string PACK_6 = "com..pack6";
-    const string PACK_7 = "com..pack7";
-    const string PACK_8 = "com..pack8";
+    public GameObject success;
+    const string PACK_1 = "com.FruitChomper.pack1";
+    const string PACK_2 = "com.FruitChomper.pack2";
+    const string PACK_3 = "com.FruitChomper.pack3";
+    const string PACK_4 = "com.FruitChomper.pack4";
+    const string PACK_5 = "com.FruitChomper.pack5";
+    const string PACK_6 = "com.FruitChomper.pack6";
+    const string PACK_7 = "com.FruitChomper.pack7";
+    const string PACK_8 = "com.FruitChomper.pack8";
     IStoreController m_StoreController;
     int numberHint;
 
+    private void Start()
+    {
+        success.SetActive(false);
+    }
     //SETUP BUILDER
     public void SetupBuilder()
     {
@@ -110,6 +115,7 @@ public class IAPManager : Singleton<IAPManager>, IDetailedStoreListener
                 hint = 100;
                 break;
         }
+        success.SetActive(true);
         if (Shop.Instance != null)
         {
             Shop.Instance.BuyRuby(hint);
